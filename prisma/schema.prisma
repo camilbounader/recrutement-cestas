@@ -163,3 +163,10 @@ model MessageAssistant {
   appliquees    Boolean  @default(false)
   date          DateTime @default(now())
 }
+
+// --- Mot de passe de l'appli (une seule ligne). Vide = APP_PASSWORD de Vercel ---
+model Securite {
+  id              String   @id @default("unique")
+  motDePasseHash  String?
+  changeLe        DateTime @default(now()) // les connexions plus anciennes sont refusées
+}

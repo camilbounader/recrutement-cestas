@@ -11,7 +11,7 @@ candidatures spontanées (vivier), mails à copier dans Zimbra, courriers PDF, s
 
 | Variable | Valeur |
 |---|---|
-| `APP_PASSWORD` | le mot de passe de l'appli (le donner à la collègue) |
+| `APP_PASSWORD` | mot de passe de départ ; ensuite il se change dans l'appli (Outils › Mot de passe) |
 | `AUTH_SECRET` | une longue phrase au hasard (sert à signer la connexion) |
 | `GEMINI_API_KEY` | clé Gemini (Google AI Studio) |
 | `CRON_SECRET` | une autre phrase au hasard (protège le rappel automatique) |
@@ -30,3 +30,8 @@ npm.cmd install
 npm.cmd run dev
 ```
 Créer un fichier `.env` avec au minimum `DATABASE_URL`, `APP_PASSWORD`, `GEMINI_API_KEY`.
+
+## Mot de passe oublié
+
+Le mot de passe choisi dans l'appli est enregistré haché dans la base. Pour revenir au mot de passe de départ (`APP_PASSWORD`) :
+Neon › *SQL Editor* › `DELETE FROM "Securite";`

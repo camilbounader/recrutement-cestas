@@ -15,6 +15,7 @@ const LIENS: LienNav[] = [
   { href: "/parametres", label: "Paramètres de paie", icone: "💶", groupe: "Outils" },
   { href: "/parametres/grilles", label: "Grilles indiciaires", icone: "📊", groupe: "Outils" },
   { href: "/parametres/modeles", label: "Modèles de mails", icone: "✉️", groupe: "Outils" },
+  { href: "/parametres/mot-de-passe", label: "Mot de passe", icone: "🔑", groupe: "Outils" },
   { href: "/import", label: "Reprise de l'ancien Excel", icone: "📤", groupe: "Outils" },
   { href: "/rgpd", label: "RGPD", icone: "🔒", groupe: "Outils" },
 ];

@@ -1,11 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { NOM_COOKIE, jetonAttendu } from "@/lib/auth";
+import { NOM_COOKIE, lireJeton } from "@/lib/auth";
 
 // Toutes les pages demandent le mot de passe, sauf la page de connexion et le rappel automatique (protégé par CRON_SECRET)
 export async function middleware(req: NextRequest) {
-  const attendu = await jetonAttendu();
-  const recu = req.cookies.get(NOM_COOKIE)?.value;
-  if (attendu && recu === attendu) return NextResponse.next();
+  if (await lireJeton(req.cookies.get(NOM_COOKIE)?.value)) return NextResponse.next();
   return NextResponse.redirect(new URL("/connexion", req.nextUrl.origin));
 }
 
