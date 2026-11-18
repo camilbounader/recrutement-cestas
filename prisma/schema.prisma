@@ -31,6 +31,7 @@ model Poste {
   observations     String?
   etat             String        @default("ouvert") // ouvert | pourvu | infructueux | annule
   rappelEnvoyeLe   DateTime?
+  importeDe        String?       // nom de la feuille Excel si le poste vient de l'ancien tableau
   creeLe           DateTime      @default(now())
   candidatures     Candidature[]
 
@@ -142,4 +143,23 @@ model ModeleTexte {
   objet      String?
   corps      String
   ordre      Int     @default(0)
+}
+
+// --- Graphiques enregistrés (Statistiques) ---
+model Graphique {
+  id      String   @id @default(cuid())
+  nom     String
+  config  String   // JSON : source, regroupement, séparation, filtres, type
+  ordre   Int      @default(0)
+  creeLe  DateTime @default(now())
+}
+
+// --- Assistant IA (effacé automatiquement après 90 jours) ---
+model MessageAssistant {
+  id            String   @id @default(cuid())
+  role          String   // user | assistant
+  contenu       String
+  propositions  String?  // JSON des actions proposées
+  appliquees    Boolean  @default(false)
+  date          DateTime @default(now())
 }

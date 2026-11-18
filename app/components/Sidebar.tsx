@@ -10,9 +10,12 @@ const LIENS: LienNav[] = [
   { href: "/", label: "Tableau de bord", icone: "🏠" },
   { href: "/postes", label: "Postes & candidatures", icone: "📂", groupe: "Recrutements" },
   { href: "/spontanees", label: "Candidatures spontanées", icone: "📥", groupe: "Recrutements" },
+  { href: "/statistiques", label: "Statistiques & rapport", icone: "📈", groupe: "Recrutements" },
+  { href: "/assistant", label: "Assistant IA", icone: "💬", groupe: "Recrutements" },
   { href: "/parametres", label: "Paramètres de paie", icone: "💶", groupe: "Outils" },
   { href: "/parametres/grilles", label: "Grilles indiciaires", icone: "📊", groupe: "Outils" },
   { href: "/parametres/modeles", label: "Modèles de mails", icone: "✉️", groupe: "Outils" },
+  { href: "/import", label: "Reprise de l'ancien Excel", icone: "📤", groupe: "Outils" },
   { href: "/rgpd", label: "RGPD", icone: "🔒", groupe: "Outils" },
 ];
 

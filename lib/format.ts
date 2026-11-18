@@ -13,6 +13,7 @@ export const ETATS_POSTE: Record<string, { libelle: string; fond: string; couleu
   pourvu: { libelle: "Pourvu", fond: "#FFF3A3", couleur: "#6B5A00" },
   infructueux: { libelle: "Infructueux", fond: "#FBEDED", couleur: "#B23B3B" },
   annule: { libelle: "Annulé", fond: "#EFEFEF", couleur: "#888" },
+  archive: { libelle: "Archivé (ancien Excel)", fond: "#EFEFEF", couleur: "#888" },
 };
 
 export const TYPES_RECRUTEMENT: Record<string, string> = {
