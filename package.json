@@ -1,0 +1,31 @@
+{
+  "name": "recrutement-cestas",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "prisma generate && node scripts/copier-worker-pdf.mjs",
+    "dev": "next dev",
+    "build": "prisma migrate deploy && next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@google/genai": "^2.19.0",
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "dotenv": "^17.4.2",
+    "next": "16.3.1",
+    "nodemailer": "^8.0.11",
+    "pdfjs-dist": "^6.2.108",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^22",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.2.18",
+    "prisma": "^7.9.1",
+    "tailwindcss": "^4",
+    "typescript": "^6.0.3"
+  }
+}

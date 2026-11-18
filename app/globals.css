@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F7F5F0;
+  --foreground: #2A2A28;
+  --color-vert: #6E8D66;
+  --color-vert-fonce: #4F6B49;
+  --color-or: #CDB84A;
+  --color-blanc: #FFFFFF;
+  --color-ligne: #E4E0D6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-vert: var(--color-vert);
+  --color-vert-fonce: var(--color-vert-fonce);
+  --color-or: var(--color-or);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.corbeille {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px !important;
+  min-height: 30px !important;
+  padding: 4px 8px !important;
+  font-size: 15px !important;
+  line-height: 1;
+  background: #FBEDED !important;
+  border: 1px solid #E8C4C4 !important;
+  border-radius: 6px !important;
+  cursor: pointer;
+}
+.corbeille:hover { background: #F6D9D9 !important; }
+.corbeille::-webkit-details-marker { display: none; }
+
+
+/* ---------- Éléments cliquables bien visibles ---------- */
+button, select, summary, label, a, input[type="submit"], input[type="checkbox"], input[type="radio"], input[type="file"] {
+  cursor: pointer;
+}
+:where(button, input[type="submit"]) {
+  padding: 4px 10px;
+  border: 1px solid #C9D6C4;
+  border-radius: 6px;
+  background: #F1F5EF;
+  color: var(--foreground);
+  transition: box-shadow 0.15s, filter 0.15s;
+}
+:where(select) {
+  padding: 3px 6px;
+  border: 1px solid #C9D6C4;
+  border-radius: 6px;
+  background: white;
+}
+:where(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]), textarea) {
+  padding: 3px 6px;
+  border: 1px solid var(--color-ligne);
+  border-radius: 6px;
+  background: white;
+}
+button:hover:not(:disabled), input[type="submit"]:hover, select:hover {
+  box-shadow: 0 0 0 3px rgba(110, 141, 102, 0.3);
+  filter: brightness(0.97);
+}
+button[style*="background:none"], button[style*="background: none"] {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+summary {
+  transition: color 0.15s;
+}
+summary:hover {
+  color: var(--color-vert-fonce) !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+button:disabled { cursor: not-allowed; opacity: 0.6; }
+
+/* ---------- Rond qui tourne après un clic ---------- */
+@keyframes tourne { to { transform: rotate(360deg); } }
+.chargement { pointer-events: none; opacity: 0.8; }
+.chargement::after {
+  content: "";
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  margin-left: 6px;
+  vertical-align: -1px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: tourne 0.7s linear infinite;
+}
+html.occupe, html.occupe * { cursor: progress !important; }
+
+
+/* Le rond qui tourne sur un lien ne pousse plus le texte à la ligne */
+.chargement { white-space: nowrap; }
+a.chargement::after { position: static; margin: 0 0 0 6px; }
+
+/* Le contenu s'élargit sur les grands écrans */
+div[style*="flex:1"][style*="padding:32px"] { max-width: 1400px !important; }
+
+
+/* ---------- Décor de saison ---------- */
+.decor-avant, .decor-fond { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.decor-avant { z-index: 40; }
+.decor-fond { z-index: -1; }
+.feuille-tombe { animation: feuille-tombe 16s linear infinite; }
+@keyframes feuille-tombe {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(35px, 26vh) rotate(100deg); }
+  50% { transform: translate(-25px, 52vh) rotate(190deg); }
+  75% { transform: translate(30px, 78vh) rotate(280deg); }
+  100% { transform: translate(0, 112vh) rotate(360deg); }
+}
+.chauve-vol { animation: chauve-vol 38s linear infinite; opacity: 0; }
+.chauve-vol.lente { animation-duration: 52s; animation-delay: -20s; }
+@keyframes chauve-vol {
+  0% { transform: translate(-150px, 0); opacity: 0; }
+  5% { opacity: 0.22; }
+  25% { transform: translate(25vw, -40px); }
+  50% { transform: translate(50vw, 30px); }
+  75% { transform: translate(75vw, -30px); }
+  95% { opacity: 0.22; }
+  100% { transform: translate(105vw, 10px); opacity: 0; }
+}
+.araignee { animation: araignee 4s ease-in-out infinite alternate; }
+@keyframes araignee { from { transform: translateY(-18px); } to { transform: translateY(8px); } }
+.boule-balance { transform-origin: top center; animation: balance 3.5s ease-in-out infinite alternate; }
+.boule-balance:nth-of-type(odd) { animation-delay: -1.7s; }
+@keyframes balance { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+.flocon-neige {
+  position: absolute; top: -12px; border-radius: 50%;
+  background: #FFFFFF; box-shadow: 0 0 3px 1px rgba(120, 170, 205, 0.6);
+  opacity: 0.9; animation: neige 12s linear infinite;
+}
+@keyframes neige {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(18px, 55vh); }
+  100% { transform: translate(-10px, 112vh); }
+}
+.flocon-tourne { animation: tourne-lent 120s linear infinite; }
+@keyframes tourne-lent { to { transform: rotate(360deg); } }
+
+
+/* ---------- Petits secrets du décor ---------- */
+.araignee-fuite { animation: araignee-fuite 3.2s ease-in-out forwards; }
+@keyframes araignee-fuite {
+  0% { transform: translateY(8px); }
+  12% { transform: translateY(16px); }
+  40% { transform: translateY(-170px); }
+  75% { transform: translateY(-170px); }
+  100% { transform: translateY(-18px); }
+}
+.citrouille-rit { transform-origin: 50% 100%; animation: citrouille-saut 0.5s ease-in-out 3; }
+@keyframes citrouille-saut {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30% { transform: translateY(-16px) rotate(-7deg); }
+  60% { transform: translateY(-5px) rotate(6deg); }
+}
+.citrouille-rit .citrouille-visage { animation: citrouille-lueur 0.3s ease-in-out 5 alternate; }
+@keyframes citrouille-lueur { from { fill: #FFC857; } to { fill: #FFF6C2; } }
+.citrouille-rit .citrouille-oeil { transform-box: fill-box; transform-origin: center; animation: citrouille-cligne 0.75s ease-in-out 2; }
+@keyframes citrouille-cligne { 0%, 40%, 60%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.1); } }
+.citrouille-rit .citrouille-bouche { transform-box: fill-box; transform-origin: center top; animation: citrouille-rire 0.25s ease-in-out 6 alternate; }
+@keyframes citrouille-rire { from { transform: scaleY(1); } to { transform: scaleY(1.7); } }
+
+
+/* ---------- Impression (liste des EPI à remettre…) ---------- */
+@media print {
+  body > div[aria-hidden], .decor-avant, .decor-fond, .pas-imprimer { display: none !important; }
+  body { background: white !important; }
+}
+
+/* ---------- Encarts d'alerte repliables + ligne de commande ciblée ---------- */
+.encart-titre { cursor: pointer; user-select: none; }
+.encart-titre::before { content: "▾"; display: inline-block; width: 14px; font-size: 11px; }
+.encart-replie > .encart-titre::before { content: "▸"; }
+.encart-replie > :not(:first-child):not([style*="position: fixed"]):not([style*="position:fixed"]) { display: none !important; }
+.encart-replie { padding-top: 10px !important; padding-bottom: 10px !important; }
+tr.ligne-commande:target > td { background: #FFF6D6; transition: background 2s; }
+/* ---------- Cartes cliquables (trombinoscope) : toute la carte ouvre la fiche, sauf ses boutons ---------- */
+.carte-cliquable { position: relative; transition: box-shadow 0.15s, transform 0.15s; }
+.carte-cliquable:hover { box-shadow: 0 0 0 3px rgba(110, 141, 102, 0.35), 0 4px 12px rgba(0, 0, 0, 0.08); transform: translateY(-1px); }
+.carte-cliquable .lien-carte { position: absolute; inset: 0; z-index: 1; }
+.carte-cliquable .au-dessus { position: relative; z-index: 2; }
+
+/* ---------- Appli Recrutement ---------- */
+.carte { background: white; border: 1px solid var(--color-ligne); border-radius: 10px; padding: 16px; }
+.titre-page { font-family: Georgia, serif; color: var(--color-vert-fonce); margin: 0 0 18px; font-size: 26px; }
+.titre-bloc { font-family: Georgia, serif; color: var(--color-vert-fonce); font-size: 17px; margin: 0 0 10px; }
+.bouton-principal { padding: 8px 14px !important; background: var(--color-vert) !important; color: white !important; border: none !important; border-radius: 8px !important; font-weight: 600; text-decoration: none; display: inline-block; font-size: 14px; }
+.bouton-lien { padding: 6px 12px; border: 1px solid #C9D6C4; border-radius: 6px; background: #F1F5EF; color: var(--foreground); text-decoration: none; font-size: 13px; display: inline-block; }
+.champ { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: #666; }
+.champ input, .champ select, .champ textarea { font-size: 14px; color: var(--foreground); padding: 6px 8px; }
+.grille-champs { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+table.tableau { border-collapse: collapse; width: 100%; font-size: 13px; background: white; }
+table.tableau th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; color: #888; border-bottom: 2px solid var(--color-ligne); padding: 6px 8px; }
+table.tableau td { border-bottom: 1px solid var(--color-ligne); padding: 6px 8px; vertical-align: top; }
+.onglets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.onglets a { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--color-ligne); background: white; text-decoration: none; color: var(--foreground); font-size: 13px; }
+.onglets a.actif { background: var(--color-vert-fonce); color: white; border-color: var(--color-vert-fonce); }

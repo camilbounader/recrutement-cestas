@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- Offres d'emploi (classées par année) ---
+model Poste {
+  id               String        @id @default(cuid())
+  annee            Int
+  intitule         String
+  service          String?
+  collectivite     String?       // MAIRIE, CCAS, COMCOM…
+  filiere          String?
+  categorie        String?       // A, B ou C
+  cadreEmploi      String?
+  gradeId          String?
+  grade            GradeGrille?  @relation(fields: [gradeId], references: [id], onDelete: SetNull)
+  typeRecrutement  String        @default("titulaire_ou_contractuel") // titulaire | contractuel | titulaire_ou_contractuel
+  tempsTravail     Float         @default(1) // 1 = temps complet, 0.9 = 31h30…
+  motif            String?       // titulaire remplacé, création de poste…
+  numeroOffre      String?       // n° Emploi Territorial
+  dateDemande      DateTime?
+  dateOuverture    DateTime?
+  dateCloture      DateTime?     // par défaut : ouverture + 1 mois
+  ficheDePoste     String?
+  ifseMensuelle    Float?
+  observations     String?
+  etat             String        @default("ouvert") // ouvert | pourvu | infructueux | annule
+  rappelEnvoyeLe   DateTime?
+  creeLe           DateTime      @default(now())
+  candidatures     Candidature[]
+
+  @@index([annee])
+}
+
+// --- Candidatures (posteId vide = candidature spontanée) ---
+model Candidature {
+  id                    String    @id @default(cuid())
+  annee                 Int
+  posteId               String?
+  poste                 Poste?    @relation(fields: [posteId], references: [id], onDelete: Cascade)
+  origine               String    @default("directe") // directe | spontanee | vivier
+  nom                   String?
+  prenom                String?
+  sexe                  String?   // H ou F
+  departement           String?
+  ville                 String?
+  adresse               String?
+  email                 String?
+  telephone             String?
+  photo                 String?   // petite photo JPEG (data URL), jamais publique
+  resume                String?
+  competences           String?
+  experience            String?   // JSON : liste des expériences lues dans le CV
+  moisExperiencePublic  Int?
+  moisExperienceTotale  Int?
+  dejaFonctionnaire     Boolean?
+  gradeActuel           String?
+  echelonActuel         Int?
+  score                 Int?      // compatibilité 0-100, à titre indicatif
+  scoreDetail           String?
+  noteAssessfirst       Float?    // note 0 à 5 donnée sur AssessFirst
+  statut                String    @default("recue") // recue | retenue | recrutee | non_retenue | desistement
+  dateEntretien         String?
+  observations          String?
+  simulation            String?   // JSON de la dernière simulation de paie
+  dateReception         DateTime  @default(now())
+  anonymiseeLe          DateTime?
+  creeLe                DateTime  @default(now())
+
+  @@index([annee])
+  @@index([posteId])
+}
+
+// --- Grilles indiciaires ---
+model GradeGrille {
+  id           String    @id @default(cuid())
+  filiere      String
+  cadreEmploi  String
+  grade        String
+  categorie    String?
+  source       String?
+  verifieLe    DateTime  @default(now())
+  echelons     Echelon[]
+  postes       Poste[]
+
+  @@unique([cadreEmploi, grade])
+}
+
+model Echelon {
+  id            String      @id @default(cuid())
+  gradeId       String
+  grade         GradeGrille @relation(fields: [gradeId], references: [id], onDelete: Cascade)
+  numero        Int
+  indiceBrut    Int?
+  indiceMajore  Int
+  dureeMois     Int?        // durée pour passer à l'échelon suivant
+
+  @@unique([gradeId, numero])
+}
+
+// --- Paramètres de paie (une seule ligne) ---
+model ParametresPaie {
+  id                         String   @id @default("unique")
+  valeurPointAnnuelle        Float    @default(5907.34)
+  seuilSmic                  Float    @default(1867.02)
+  ctiPoints                  Int      @default(49)
+  sftIndicePlancher          Int      @default(454)
+  transfertA                 Float    @default(389)
+  transfertB                 Float    @default(278)
+  transfertC                 Float    @default(167)
+  ciaAnnuel                  Float    @default(550)
+  tauxIndemniteCsg           Float    @default(0.0076)
+  tauxCnracl                 Float    @default(0.111)
+  tauxRafp                   Float    @default(0.05)
+  plafondRafp                Float    @default(0.2)
+  assietteCsg                Float    @default(0.9825)
+  tauxCsg                    Float    @default(0.024)
+  tauxCrds                   Float    @default(0.005)
+  tauxCsgDeductible          Float    @default(0.068)
+  plafondSecu                Float    @default(4005)
+  tauxVieillessePlafonnee    Float    @default(0.069)
+  tauxVieillesseDeplafonnee  Float    @default(0.004)
+  tauxIrcantecA              Float    @default(0.0284)
+  tauxIrcantecB              Float    @default(0.0706)
+  participationSante         Float    @default(20)
+  participationPrevoyance    Float    @default(8)
+  signature                  String?
+  misAJourLe                 DateTime @default(now())
+}
+
+// --- Modèles de mails et de courriers ---
+model ModeleTexte {
+  id         String  @id @default(cuid())
+  code       String? @unique
+  nom        String
+  type       String  // mail | courrier
+  objet      String?
+  corps      String
+  ordre      Int     @default(0)
+}
